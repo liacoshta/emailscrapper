@@ -37,34 +37,33 @@ char fila_remover(Fila f){
 
 %}
 
-letras [a-zA-Z]
-digito [0-9]
+letras [a-zA-Z0-9]
 palavra {letras}+
-inteiro {digitos}+
-email {palavra[@]palavra}
+carac [._-]*
+nome {palavra}{carac}{palavra}
 
 
 
 %%
 
-email {printf("Encontrei o email: %s\n", yytext);}
 
-[[:space]]+;
-[[:^space]]+;
 
-[.\n]*;
+{nome}[@]{nome}[.com]* { printf("%s\n", yytext);}
+
+[[:space:]]+ ;
+[[:^space:]]+ ;
+
 
 %%
 
 int main() {
 	
-	//fila f;
-	//fila_init (&f);
-	//while(f->n>0){
-//printf("%c", fila_remover(&f));  
-	//}
-	//printf("\n");
+	/*fila f;
+	fila_init (&f);
+	while(f->n>0){ 
+printf("%c", fila_remover(&f));  
+	}
+	printf("\n");*/
 	yylex();
-	
-  return 0;
+	return 0;
 }
