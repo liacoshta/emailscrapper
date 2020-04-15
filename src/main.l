@@ -1,7 +1,7 @@
 
 %{
 #include <stdio.h>
-
+#include <string.h>
 #define tam_fila 10
 
 typedef struct {
@@ -17,7 +17,7 @@ void fila_init (Fila f){
 
 void fila_adicionar (Fila f, char c){
 	if(f->n < tam_fila){
-	f->dados [f->pos_escrita] = c;
+	f->dados[f->pos_escrita] = c;
 	f->pos_escrita = (f->pos_escrita + 1) % tam_fila;
 	f->n += 1;
 	}
@@ -37,26 +37,33 @@ char fila_remover(Fila f){
 
 %}
 
-letras [a-z]*[A-Z]*
-nome [letras]+[0-9]*
-domínio [letras]+[0-9]*
+letras [a-zA-Z]
+digito [0-9]
+palavra {letras}+
+inteiro {digitos}+
+email {palavra[@]palavra}
+
 
 
 %%
 
-nome[@]dominio {fila_adicionar(yytext);}
+email {printf("Encontrei o email: %s\n", yytext);}
 
+[[:space]]+;
+[[:^space]]+;
+
+[.\n]*;
 
 %%
 
 int main() {
 	
-	fila f;
-	fila_init (&f);
-	while(f->n>0){
-printf("%c", fila_remover(&f));  
-	}
-	printf("\n");
+	//fila f;
+	//fila_init (&f);
+	//while(f->n>0){
+//printf("%c", fila_remover(&f));  
+	//}
+	//printf("\n");
 	yylex();
 	
   return 0;
