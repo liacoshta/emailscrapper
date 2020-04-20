@@ -8,24 +8,23 @@
 
 letras [a-zA-Z0-9]
 palavra {letras}+
-palavra2 {letras}*
-carac [._-]*
-meio ({carac}{palavra})*
-nome {palavra}{meio}
-caracponto[.]
+nome {palavra}({carac}{palavra})*
 email {nome}[@]{nome}
 nomegeral [@,!]*{nome}
-caracespeciais [!@,]*
-
+caracespeciais [!@,-]*
+carac [._-]*
+caracponto[.]
+caractraco [-]
 
 %%
 {caracponto} {};
 {email} { printf("%s\n", yytext);} ;
-
-
+{caractraco}{email} ;
+{email}{caractraco} ;
 [[:space:]]+ ;
 {nomegeral} ;
 {caracespeciais} ;
+
 
 %%
 
